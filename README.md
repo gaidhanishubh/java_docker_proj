@@ -2,7 +2,7 @@
 Basic Helloworld project which can be dockerized if required.
 
 
-###CASE-1 ==> Normal Build And Deploy
+##########CASE-1 ==> Normal Build And Deploy ###########
 #Install JAVA
 apt install openjdk-17-jdk -y
 java --version
@@ -38,7 +38,7 @@ ON Browser: http://ip:8081
 
 
 
-#CASE-2 ==> WITH DOCKER
+###########CASE-2 ==> WITH DOCKER #######################
 
 git clone https://github.com/gaidhanishubh/java_docker_proj.git
 cd java_docker_proj/
