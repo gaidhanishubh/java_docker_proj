@@ -9,14 +9,14 @@ java --version
 
 #Install gradle
 cd /tmp
-wget https://services.gradle.org/distributions/gradle-8.4-bin.zip             
+wget https://services.gradle.org/distributions/gradle-8.4-bin.zip
 sudo mkdir /opt/gradle
 sudo unzip -d /opt/gradle gradle-8.4-bin.zip
 
 sudo nano /etc/profile.d/gradle.sh
 export GRADLE_HOME=/opt/gradle/gradle-8.4
 export PATH=$GRADLE_HOME/bin:$PATH
---------------------------------------------------
+
 
 sudo chmod +x /etc/profile.d/gradle.sh
 source /etc/profile.d/gradle.sh
@@ -33,6 +33,8 @@ java -jar /build/libs/demo-0.0.1-SNAPSHOT.jar
 
 
 ON Browser: http://ip:8081
+
+
 
 
 
