@@ -7,7 +7,7 @@ Basic Helloworld project which can be dockerized if required.
 apt install openjdk-17-jdk -y
 java --version
 
-#Install gradle
+#Install gradle#
 cd /tmp
 wget https://services.gradle.org/distributions/gradle-8.4-bin.zip
 sudo mkdir /opt/gradle
@@ -22,7 +22,7 @@ sudo chmod +x /etc/profile.d/gradle.sh
 source /etc/profile.d/gradle.sh
 gradle -v
 
-#git clone, Build & Deploy
+#git clone, Build & Deploy#
 git clone https://github.com/gaidhanishubh/java_docker_proj.git
 cd java_docker_proj/
 chmod +x ./gradlew
