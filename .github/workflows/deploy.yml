@@ -55,9 +55,9 @@ jobs:
           script: |
             echo "🚀 Deployment started"
             # copy file from runner to remote
-            scp -P ${{ secrets.SSH_PORT }} demo.jar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/demo.jar
+            scp -P ${{ secrets.SSH_PORT }} demo.jar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEST_DIR }}/demo.jar
           
-            # move into place on remote with sudo
-            ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
-            "sudo mv /tmp/demo.jar ${{ secrets.DEST_DIR }}/demo.jar && sudo chown root:root ${{ secrets.DEST_DIR }}/demo.jar"
-            echo "✅ Deployment completed"
+#            # move into place on remote with sudo
+#            ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
+#            "sudo mv /tmp/demo.jar ${{ secrets.DEST_DIR }}/demo.jar && sudo chown root:root ${{ secrets.DEST_DIR }}/demo.jar"
+#            echo "✅ Deployment completed"
