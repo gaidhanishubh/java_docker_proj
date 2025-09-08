@@ -45,12 +45,18 @@ jobs:
           name: jar
           path: .
       - name: ssh to server
+        continue-on-error: true
         run: |
           mkdir ~/.ssh
           chmod 700 ~/.ssh
           echo "${{ secrets.SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -p "${{ secrets.SSH_PORT }}" "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+      - name: Debug key file
+        if: always()
+        run: |
+          head -5 ~/.ssh/id_ed25519 || true
+          ls -l ~/.ssh/id_ed25519 || true
 
       - name: Copy JAR to remote
         env:
