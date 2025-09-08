@@ -46,7 +46,8 @@ jobs:
           path: .
       - name: ssh to server
         run: |
-          install -m 700 -d ~/.ssh
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -p "${{ secrets.SSH_PORT }}" "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
@@ -56,7 +57,15 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
           SSH_USER: ${{ secrets.SSH_USER }}
+        run: scp -P "$SSH_PORT" demo.jar "$SSH_USER@$SSH_HOST:/tmp/demo.jar"
+
+      - name: Move JAR with sudo
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          SSH_USER: ${{ secrets.SSH_USER }}
           DEST_DIR: ${{ secrets.DEST_DIR }}
-        run: scp -P "$SSH_PORT" demo.jar "$SSH_USER@$SSH_HOST:$DEST_DIR"
+        run: |
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "sudo mv /tmp/demo.jar $DEST_DIR/demo.jar && sudo chown root:root $DEST_DIR/demo.jar"
 
       
