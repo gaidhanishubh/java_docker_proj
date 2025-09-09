@@ -68,9 +68,9 @@ jobs:
 # 1> create and copy pub and private key
 # 2> add private key in github
 # 3> add public ket to authorized keys on remote server
-ssh-keygen -t ed25519 -C "github-action-key"
+#ssh-keygen -t ed25519 -C "github-action-key"
 
 # adding pub key on remote server.
-echo "ssh-ed25519 AAAAC3NzaC1lfhtgfhghE5AAAAIPFI+QIwtkAclAtdfhM8qMIsZBwAcJWirblPk/MAfp0i github-action-key" >> ~/.ssh/authorized_keys
+#echo "ssh-ed25519 AAAAC3NzaC1lfhtgfhghE5AAAAIPFI+QIwtkAclAtdfhM8qMIsZBwAcJWirblPk/MAfp0i github-action-key" >> ~/.ssh/authorized_keys
 
 ####################
