@@ -46,18 +46,19 @@ jobs:
           name: jar
           path: .
 
-      - name: Deploy to server using SSH
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: |
-            echo "🚀 Deployment started"
-            # copy file from runner to remote
-            scp -o StrictHostKeyChecking=no -P ${{ secrets.SSH_PORT }} demo.jar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEST_DIR }}/demo.jar
-          
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy
+        run: |
+          echo "🚀 Deployment started"
+          scp -P -o StrictHostKeyChecking=no ${{ secrets.SSH_PORT }} demo.jar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEST_DIR }}/demo.jar
+
+
 ## move into place on remote with sudo
 #            ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
 #            "sudo mv /tmp/demo.jar ${{ secrets.DEST_DIR }}/demo.jar && sudo chown root:root ${{ secrets.DEST_DIR }}/demo.jar"
