@@ -56,7 +56,7 @@ jobs:
       - name: Deploy
         run: |
           echo "🚀 Deployment started"
-          scp -P -o StrictHostKeyChecking=no ${{ secrets.SSH_PORT }} demo.jar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEST_DIR }}/demo.jar
+          scp -o StrictHostKeyChecking=no -P ${{ secrets.SSH_PORT }} demo.jar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEST_DIR }}/demo.jar
 
 
 ## move into place on remote with sudo
