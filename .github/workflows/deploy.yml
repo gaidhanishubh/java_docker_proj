@@ -57,9 +57,20 @@ jobs:
         run: |
           echo "🚀 Deployment started"
           scp -o StrictHostKeyChecking=no -P ${{ secrets.SSH_PORT }} demo.jar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEST_DIR }}/demo.jar
+          # move into place on remote with sudo
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
+          "sudo mv ${{ secrets.DEST_DIR }}/demo.jar /root/modem/ && sudo chown root:root /root/modem/demo.jar"
+          echo "✅ Deployment completed"
 
 
-## move into place on remote with sudo
-#            ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
-#            "sudo mv /tmp/demo.jar ${{ secrets.DEST_DIR }}/demo.jar && sudo chown root:root ${{ secrets.DEST_DIR }}/demo.jar"
-#            echo "✅ Deployment completed"
+
+####################
+# 1> create and copy pub and private key
+# 2> add private key in github
+# 3> add public ket to authorized keys on remote server
+ssh-keygen -t ed25519 -C "github-action-key"
+
+# adding pub key on remote server.
+echo "ssh-ed25519 AAAAC3NzaC1lfhtgfhghE5AAAAIPFI+QIwtkAclAtdfhM8qMIsZBwAcJWirblPk/MAfp0i github-action-key" >> ~/.ssh/authorized_keys
+
+####################
