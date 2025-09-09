@@ -60,7 +60,7 @@ jobs:
           # move into place on remote with sudo
           ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
           "sudo mv ${{ secrets.DEST_DIR }}/demo.jar /root/modem/ && sudo chown root:root /root/modem/demo.jar"
-          echo "✅ Deployment completed"
+          echo "✅ Deployment completedd"
 
 
 
