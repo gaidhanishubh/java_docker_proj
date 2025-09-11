@@ -66,7 +66,7 @@ jobs:
           sudo mkdir -p \$BACKUP_DIR
           sudo cp /root/modem/demo.jar \$BACKUP_DIR/
           echo "stopping the service"
-          sudo systemctl stop demo.jar
+          sudo systemctl stop demo.service
           sudo rm -f  /root/modem/demo.jar
           sudo mv ${{ secrets.DEST_DIR }}/demo.jar /root/modem/
           sudo chown root:root /root/modem/demo.jar
