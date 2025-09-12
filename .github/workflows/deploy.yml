@@ -33,4 +33,4 @@ jobs:
       - name: running a ansible playbook
         run: |
           ansible-playbook -i /ANSIBLE/INVENTORY/hosts /ANSIBLE/PLAYBOOK/remote.yml
-          echo "Playbook run completed" 
+          echo "Playbook run completed..." 
