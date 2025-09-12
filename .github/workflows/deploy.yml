@@ -39,5 +39,5 @@ jobs:
           ssh -p ${{ secrets.SSH_PORT }} shubham@192.168.130.3 "
           sudo mv /home/shubham/DEMODIR/demo.jar /root/modem/ && sudo chown root:root /root/modem/demo.jar
           "
-          echo '✅ Deployment completed'
+          echo '✅ Deployment completed...'
           
