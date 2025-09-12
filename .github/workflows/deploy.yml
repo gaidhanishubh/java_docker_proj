@@ -1,13 +1,12 @@
 name: "Build and Copy"
 on:
   push:
-    branches: [ main ]
+    branches: [ dev ]
   workflow_dispatch: {}
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    environment: buildProd
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
@@ -16,10 +15,6 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
           cache: gradle
-
-      - name: check java version
-        run: java --version
-
 
       - name: Build with gradle
         run: |
@@ -31,62 +26,18 @@ jobs:
           mkdir -p target/deploy
           cp build/libs/demo-0.0.1-SNAPSHOT.jar target/deploy/demo.jar
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: jar
-          path: target/deploy/demo.jar
-
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build
-    environment: deployProd
     steps:
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: jar
-          path: .
-
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-
       - name: Deploy
         run: |
           echo "🚀 Deployment started"
-          scp -P ${{ secrets.SSH_PORT }} demo.jar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEST_DIR }}/demo.jar
+          scp -P ${{ secrets.SSH_PORT }} target/deploy/demo.jar \
+              shubham@192.168.130.3:/home/shubham/DEMODIR/demo.jar
           
-          # move into place on remote with sudo
-          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
-          set -e
-          BACKUP_DIR=/root/backup/$(date +%F)
-          sudo mkdir -p \$BACKUP_DIR
-          sudo cp /root/modem/demo.jar \$BACKUP_DIR/
-          echo "stopping the service"
-          sudo systemctl stop demo.service
-          sudo rm -f  /root/modem/demo.jar
-          sudo mv ${{ secrets.DEST_DIR }}/demo.jar /root/modem/
-          sudo chown root:root /root/modem/demo.jar
-          echo 'Waiting 15 seconds before restart...'
-          sleep 15
-          echo "starting the service"
-          sudo systemctl start demo.service
-          echo "✅ Deployment completedd"
+          ssh -p ${{ secrets.SSH_PORT }} shubham@192.168.130.3 "
+          sudo mv /home/shubham/DEMODIR/demo.jar /root/modem/ && sudo chown root:root /root/modem/demo.jar
           "
-
-
-
-
-#####################
-# 1> create and copy pub and private key
-# 2> add private key in github
-# 3> add public ket to authorized keys on remote server
-#ssh-keygen -t ed25519 -C "github-action-key"
-
-# adding pub key on remote server.
-#echo "ssh-ed25519 AAAAC3NzaC1lfhtgfhghE5AAAAIPFI+QIwtkAclAtdfhM8qMIsZBwAcJWirblPk/MAfp0i github-action-key" >> ~/.ssh/authorized_keys
-
-#####################
+          echo '✅ Deployment completed...'
+          
